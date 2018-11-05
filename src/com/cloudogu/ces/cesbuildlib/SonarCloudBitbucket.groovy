@@ -22,14 +22,14 @@ class SonarCloudBitbucket extends SonarQube {
 
     @Override
     void initMavenForPullRequest(Maven mvn, String repo) {
-        script.echo "SonarQube analyzing PullRequest ${script.env.CHANGE_ID}. Using preview mode. "
+        script.echo "SonarQube analyzing PullRequest ${script.env.CHANGE_ID}."
         mvn.additionalArgs +=
                 "-Dsonar.pullrequest.base=${script.env.CHANGE_TARGET} " +
                 "-Dsonar.pullrequest.branch=${script.env.CHANGE_BRANCH} " +
                 "-Dsonar.pullrequest.key=${script.env.CHANGE_ID} " +
                 "-Dsonar.pullrequest.provider=bitbucketcloud " +
-                "-Dsonar.pullrequest.bitbucketcloud.owner=flexreceipts" +
-                "-Dsonar.pullrequest.bitbucketcloud.repository=${repo} "
+                "-Dsonar.pullrequest.bitbucketcloud.owner=${config['sonarOrganization']}" +
+                "-Dsonar.pullrequest.bitbucketcloud.repository=${config['repo]} "
     }
 
     @Override
