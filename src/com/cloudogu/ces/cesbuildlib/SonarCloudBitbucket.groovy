@@ -28,7 +28,7 @@ class SonarCloudBitbucket extends SonarQube {
                 "-Dsonar.pullrequest.branch=${script.env.CHANGE_BRANCH} " +
                 "-Dsonar.pullrequest.key=${script.env.CHANGE_ID} " +
                 "-Dsonar.pullrequest.provider=bitbucketcloud " +
-                "-Dsonar.pullrequest.bitbucketcloud.owner=${config['sonarOrganization']}" +
+                "-Dsonar.pullrequest.bitbucketcloud.owner=${config['sonarOrganization']} " +
                 "-Dsonar.pullrequest.bitbucketcloud.repository=${config['repo']} "
     }
 
@@ -37,7 +37,7 @@ class SonarCloudBitbucket extends SonarQube {
         super.initMaven(mvn)
 
         if (config['sonarOrganization']) {
-            mvn.additionalArgs += " -Dsonar.organization=${config['sonarOrganization']} "
+//            mvn.additionalArgs += " -Dsonar.organization=${config['sonarOrganization']} "
                 
         }
     }
