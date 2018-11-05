@@ -8,7 +8,7 @@ package com.cloudogu.ces.cesbuildlib
  */
 class SonarCloudBitbucket extends SonarQube {
 
-    SonarCloud(script, Map config) {
+    SonarCloudBitbucket(script, Map config) {
         super(script, config)
 
         this.isUsingBranchPlugin = true
@@ -21,7 +21,7 @@ class SonarCloudBitbucket extends SonarQube {
     }
 
     @Override
-    void initMavenForPullRequest(Maven mvn, String repo) {
+    void initMavenForPullRequest(Maven mvn) {
         script.echo "SonarQube analyzing PullRequest ${script.env.CHANGE_ID}."
         mvn.additionalArgs +=
                 "-Dsonar.pullrequest.base=${script.env.CHANGE_TARGET} " +
@@ -29,7 +29,7 @@ class SonarCloudBitbucket extends SonarQube {
                 "-Dsonar.pullrequest.key=${script.env.CHANGE_ID} " +
                 "-Dsonar.pullrequest.provider=bitbucketcloud " +
                 "-Dsonar.pullrequest.bitbucketcloud.owner=${config['sonarOrganization']}" +
-                "-Dsonar.pullrequest.bitbucketcloud.repository=${config['repo]} "
+                "-Dsonar.pullrequest.bitbucketcloud.repository=${config['repo']} "
     }
 
     @Override
