@@ -41,7 +41,7 @@ class SonarCloudBitbucket extends SonarQube {
         mvn.additionalArgs += "-Dsonar.projectName=${config['repo']} "
         if((config['targetBranch'] != null && script.env.BRANCH_NAME != config['targetBranch'] ) ||
             script.env.BRANCH_NAME != 'master') {
-           mvn.additionalArgs += " -Dsonar.project.target=${config['targetBranch']}
+           mvn.additionalArgs += " -Dsonar.project.target=${config['targetBranch']}"
            mvn.additionalArgs += " -Dsonar.projectName${script.env.BRANCH_NAME}"
         }
         if (config['sonarOrganization']) {
