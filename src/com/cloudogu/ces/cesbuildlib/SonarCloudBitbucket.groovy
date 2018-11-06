@@ -29,16 +29,23 @@ class SonarCloudBitbucket extends SonarQube {
                 "-Dsonar.pullrequest.key=${script.env.CHANGE_ID} " +
                 "-Dsonar.pullrequest.provider=bitbucketcloud " +
                 "-Dsonar.pullrequest.bitbucketcloud.owner=${config['sonarOrganization']} " +
-                "-Dsonar.pullrequest.bitbucketcloud.repository=${config['repo']} "
+                "-Dsonar.pullrequest.bitbucketcloud.repository=${config['repo']} " +
+                "-Dsonar.organization=${config['sonarOrganization']} " +
+                "-Dsonar.projectName=${config['repo']} "
     }
 
     @Override
     protected void initMaven(Maven mvn) {
         super.initMaven(mvn)
-
+        // Only add branch if the branch isn't master.
+        mvn.additionalArgs += "-Dsonar.projectName=${config['repo']} "
+        if((config['targetBranch'] != null && script.env.BRANCH_NAME != config['targetBranch'] ) ||
+            script.env.BRANCH_NAME != 'master') {
+           mvn.additionalArgs += " -Dsonar.project.target=${config['targetBranch']}
+           mvn.additionalArgs += " -Dsonar.projectName${script.env.BRANCH_NAME}"
+        }
         if (config['sonarOrganization']) {
-//            mvn.additionalArgs += " -Dsonar.organization=${config['sonarOrganization']} "
-                
+            mvn.additionalArgs += " -Dsonar.organization=${config['sonarOrganization']} "
         }
     }
 
