@@ -1,5 +1,6 @@
 package com.cloudogu.ces.cesbuildlib
 
+import com.cloudogu.ces.cesbuildlib.util.BitBucketUUIDService
 /**
  * Abstraction for SonarCloud. More or less a special SonarQube instance.
  *
@@ -7,11 +8,15 @@ package com.cloudogu.ces.cesbuildlib
  * Normal SonarQube uses e.g. the GitHub plugin.
  */
 class SonarCloudBitbucket extends SonarQube {
+    def String repoUUID;
+    def String ownerUUID;
 
     SonarCloudBitbucket(script, Map config) {
         super(script, config)
-
         this.isUsingBranchPlugin = true
+        result = BitBucketUUIDService.getRepoInfo(script.env['BITBUCKET_OAUTH_USER'].toString(), script.env['BITBUCKET_OAUTH_SECRET'].toString(), config['repo'].toString(), config['owner'].toString())
+        repoUUID = result.repo
+        ownerUUID = result.owner
     }
 
     @Override
@@ -28,8 +33,8 @@ class SonarCloudBitbucket extends SonarQube {
                 "-Dsonar.pullrequest.branch=${script.env.CHANGE_BRANCH} " +
                 "-Dsonar.pullrequest.key=${script.env.CHANGE_ID} " +
                 "-Dsonar.pullrequest.provider=bitbucketcloud " +
-                "-Dsonar.pullrequest.bitbucketcloud.owner=${config['sonarOrganization']} " +
-                "-Dsonar.pullrequest.bitbucketcloud.repository=${config['repo']} " +
+                "-Dsonar.pullrequest.bitbucketcloud.owner=${ownerUUID} " +
+                "-Dsonar.pullrequest.bitbucketcloud.repository=${repoUUID} " +
                 "-Dsonar.organization=${config['sonarOrganization']} " +
                 "-Dsonar.projectName=${config['repo']} "
     }
