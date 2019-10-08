@@ -1,10 +1,13 @@
 package com.cloudogu.ces.cesbuildlib.util
+
+@Grab('org.codehaus.groovy.modules.http-builder:http-builder:0.7.1')
 import groovy.json.JsonSlurper
 import groovy.text.SimpleTemplateEngine
 import groovyx.net.http.ContentType
 import groovyx.net.http.HTTPBuilder
 import groovyx.net.http.RESTClient
 import net.sf.json.JSON
+
 
 class BitBucketUUIDService {
     static String repoPath = 'https://api.bitbucket.org/2.0/repositories/$ownerSlug/$repoSlug'
